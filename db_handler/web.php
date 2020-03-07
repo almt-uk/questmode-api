@@ -13,6 +13,30 @@ class DbHandler {
         $this->conn = $db->connect();
     }
 
+    public function checkApi($api_key, $api_password)
+    {
+        
+        $sqlQuery = "SELECT 1 FROM api_clients WHERE api_key = ? AND api_password = ?";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bind_param("ss", $api_key, $api_password);
+        if ($stmt->execute()) {
+            $dataRows = fetchData($stmt);
+            if (count($dataRows) == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
+    public function publishQuizz()
+    {
+
+    }
+
 }
 
 ?>
