@@ -88,7 +88,7 @@ class DbHandler {
         if (!$response["error"])
         {
             //upload question first
-            
+            $sqlQuery = "INSERT INTO api_key = ? AND api_password = ?";
         }
 
     }
