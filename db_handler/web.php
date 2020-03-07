@@ -32,7 +32,7 @@ class DbHandler {
 
     }
 
-    public function publishQuizz()
+    public function publishQuizz($quizzData, $quizzQuestionsData)
     {
 
     }
