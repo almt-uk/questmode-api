@@ -32,9 +32,161 @@ class DbHandler {
 
     }
 
-    public function publishQuizz()
+    public function publishQuizz($quizzData, $quizzQuestionsData, $uid)
     {
+        
+        // prepare the response array
+        $response = array();
+        $response["error"] = false;
 
+        // parse quizz data
+        $quizzData = json_decode($quizzData);
+        $quizzData->title;
+        $quizzData->visibility;
+        if (!empty($quizzData->title) && ($quizzData->visibility == 0 || $quizzData->visibility == 1))
+        {
+            // no error
+        }
+        else
+        {
+            $response["error"] = true;
+            $response["errorQuizzData"] = "Please check the quizz title and/or visibility";
+        }
+
+        // parse quizz questions data
+        $quizzQuestionsData = json_decode($quizzQuestionsData);
+        // going through each question
+        foreach ($quizzQuestionsData as $questionData) {
+            $questionData->content;
+            $questionData->experience;
+            $questionData->image_url;
+            $questionData->answer1;
+            $questionData->answer2;
+            $questionData->answer3;
+            $questionData->answer4;
+            $questionData->answer1_correct;
+            $questionData->answer2_correct;
+            $questionData->answer3_correct;
+            $questionData->answer4_correct;
+            $questionData->time_question;
+            $questionData->time_answer;
+            $questionData->time_results;
+            if (empty($questionData->content) || empty($questionData->answer1) || empty($questionData->answer2)
+                || empty($questionData->answer3) || empty($questionData->answer4))
+            {
+                $response["error"] = true;
+                $response["errorQuestions"] = "Please check the questions data";
+            }
+            if ($questionData->time_question >= 20 || $questionData->time_answer >= 20 ||
+               $questionData->time_results >= 20)
+            {
+                $response["error"] = true;
+                $response["errorQuestions"] = "Please check the questions data";
+            }
+        }
+
+        if (!$response["error"])
+        {
+            //upload quizz data
+            $insert_id = $this->quizzCreate($quizzData, $uid);
+            if($insert_id == NULL)
+            {
+                $response["error"] = true;
+                $response["errorCreate"] = "Please try again";
+            }
+            else
+            {
+                $succeedQuestion = $this->quizzCreateQuestions($quizzQuestionsData, $insert_id);
+                if(!$succeedQuestion)
+                {
+                    $response["error"] = true;
+                    $response["errorCreate"] = "Please try again";
+                }
+            }
+
+        }
+
+        $stmt->close();
+        return $response;
+
+    }
+
+    private function quizzCreate($quizzData, $uid)
+    {
+        $quizzData = json_decode($quizzData);
+        $sqlQuery = "INSERT INTO quizzes SET title = ?, visibility = ?, creator_id = ?";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility, $uid);
+        if ($stmt->execute()) {
+            return $stmt->insert_id;
+        } else {
+            return false;
+        }
+    }
+
+    private function quizzCreateQuestions($quizzQuestionsData, $insert_id)
+    {
+        $quizzQuestionsData = json_decode($quizzQuestionsData);
+        // going through each question
+        foreach ($quizzQuestionsData as $questionData) {
+            $questionData->content;
+            $questionData->experience;
+            $questionData->image_url;
+            $questionData->answer1;
+            $questionData->answer2;
+            $questionData->answer3;
+            $questionData->answer4;
+            $questionData->answer1_correct;
+            $questionData->answer2_correct;
+            $questionData->answer3_correct;
+            $questionData->answer4_correct;
+            $questionData->time_question;
+            $questionData->time_answer;
+            $questionData->time_results;
+            $sqlQuery = "INSERT INTO questions
+                SET content = ?, experience = ?, image = ?, quizz_id = ?,
+                time_question = ?, time_answer = ?, time_results = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+            $stmt->bind_param("sisiiii", $questionData->content, $questionData->experience,
+                $insert_id, $questionData->time_question, $questionData->time_answer, $questionData->time_results);
+            if ($stmt->execute()) {
+                $question_id = $stmt->insert_id;
+                $sqlQuery = "INSERT INTO answers
+                    SET question_id = ?, content = ?, is_right = ?, order_id = ?";
+                $stmt = $this->conn->prepare($sqlQuery);
+                $stmt->bind_param("isii", $question_id, $questionData->answer1,
+                    $questionData->answer1_correct, 1);
+                if (!$stmt->execute()) {
+                    return false;
+                }
+                $sqlQuery = "INSERT INTO answers
+                    SET question_id = ?, content = ?, is_right = ?, order_id = ?";
+                $stmt = $this->conn->prepare($sqlQuery);
+                $stmt->bind_param("isii", $question_id, $questionData->answer2,
+                    $questionData->answer2_correct, 2);
+                if (!$stmt->execute()) {
+                    return false;
+                }
+                $sqlQuery = "INSERT INTO answers
+                    SET question_id = ?, content = ?, is_right = ?, order_id = ?";
+                $stmt = $this->conn->prepare($sqlQuery);
+                $stmt->bind_param("isii", $question_id, $questionData->answer3,
+                    $questionData->answer3_correct, 3);
+                if (!$stmt->execute()) {
+                    return false;
+                }
+                $sqlQuery = "INSERT INTO answers
+                    SET question_id = ?, content = ?, is_right = ?, order_id = ?";
+                $stmt = $this->conn->prepare($sqlQuery);
+                $stmt->bind_param("isii", $question_id, $questionData->answer4,
+                    $questionData->answer4_correct, 4);
+                if (!$stmt->execute()) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
     }
 
 }
