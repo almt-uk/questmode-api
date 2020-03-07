@@ -30,15 +30,7 @@ class DbHandler {
             return false;
         }
 
-    }
-
-    public function create()
-    {
-        $quizzDataI = '{"title":"Quizz Test 1","visibility":1}';
-        $questionDataI = '[{"content":"Northampton location","experience":"7400","image_url":"imagehssgfsfsgsgssg","answer1":"United Kingdom","answer2":"England","answer3":"Romania","answer4":"Belgium","answer1_correct":1,"answer2_correct":1,"answer3_correct":0,"answer4_correct":0,"time_question":5,"time_answer":5,"time_results":5},{"content":"UoN","experience":"1400","image_url":"unkbssghsshsgg","answer1":"Uni","answer2":"University of Northampton","answer3":"Uni of Birmingham","answer4":"Uni of London","answer1_correct":1,"answer2_correct":1,"answer3_correct":0,"answer4_correct":0,"time_question":5,"time_answer":5,"time_results":5}]';
-        $UID = 100002;
-        $this->publishQuizz($quizzDataI, $questionDataI, $UID);
-    }    
+    }  
 
     public function publishQuizz($quizzData, $quizzQuestionsData, $uid)
     {
