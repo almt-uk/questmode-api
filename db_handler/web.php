@@ -96,7 +96,7 @@ class DbHandler {
             }
             else
             {
-                
+                $this->quizzCreateQuestions($quizzQuestionsData, $uid);
             }
 
         }
@@ -105,6 +105,20 @@ class DbHandler {
 
     private function quizzCreate($quizzData, $uid)
     {
+        $quizzData = json_decode($quizzData);
+        $sqlQuery = "INSERT INTO quizzes SET title = ?, visibility = ?, creator_id = ?";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility, $uid);
+        if ($stmt->execute()) {
+            return $stmt->insert_id;
+        } else {
+            return false;
+        }
+    }
+
+    private function quizzCreateQuestions($quizzQuestionsData, $uid)
+    {
+        $quizzData = json_decode($quizzData);
         $sqlQuery = "INSERT INTO quizzes SET title = ?, visibility = ?, creator_id = ?";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility, $uid);
