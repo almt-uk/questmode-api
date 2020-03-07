@@ -32,7 +32,7 @@ class DbHandler {
 
     }
 
-    public function publishQuizz($quizzData, $quizzQuestionsData)
+    public function publishQuizz($quizzData, $quizzQuestionsData, $uid)
     {
         
         // prepare the response array
