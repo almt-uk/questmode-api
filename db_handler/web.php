@@ -13,9 +13,14 @@ class DbHandler {
         $this->conn = $db->connect();
     }
 
-    public function publishQuizz()
+    public function checkApi()
     {
         
+    }
+
+    public function publishQuizz()
+    {
+
     }
 
 }
