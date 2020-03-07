@@ -96,10 +96,18 @@ class DbHandler {
             }
             else
             {
-                $this->quizzCreateQuestions($quizzQuestionsData, $insert_id);
+                $succeedQuestion = $this->quizzCreateQuestions($quizzQuestionsData, $insert_id);
+                if(!$succeedQuestion)
+                {
+                    $response["error"] = true;
+                    $response["errorCreate"] = "Please try again";
+                }
             }
 
         }
+
+        $stmt->close();
+        return $response;
 
     }
 
@@ -142,7 +150,39 @@ class DbHandler {
             $stmt->bind_param("sisiiii", $questionData->content, $questionData->experience,
                 $insert_id, $questionData->time_question, $questionData->time_answer, $questionData->time_results);
             if ($stmt->execute()) {
-                return $stmt->insert_id;
+                $question_id = $stmt->insert_id;
+                $sqlQuery = "INSERT INTO answers
+                    SET question_id = ?, content = ?, is_right = ?, order_id = ?";
+                $stmt = $this->conn->prepare($sqlQuery);
+                $stmt->bind_param("isii", $question_id, $questionData->answer1,
+                    $questionData->answer1_correct, 1);
+                if (!$stmt->execute()) {
+                    return false;
+                }
+                $sqlQuery = "INSERT INTO answers
+                    SET question_id = ?, content = ?, is_right = ?, order_id = ?";
+                $stmt = $this->conn->prepare($sqlQuery);
+                $stmt->bind_param("isii", $question_id, $questionData->answer2,
+                    $questionData->answer2_correct, 2);
+                if (!$stmt->execute()) {
+                    return false;
+                }
+                $sqlQuery = "INSERT INTO answers
+                    SET question_id = ?, content = ?, is_right = ?, order_id = ?";
+                $stmt = $this->conn->prepare($sqlQuery);
+                $stmt->bind_param("isii", $question_id, $questionData->answer3,
+                    $questionData->answer3_correct, 3);
+                if (!$stmt->execute()) {
+                    return false;
+                }
+                $sqlQuery = "INSERT INTO answers
+                    SET question_id = ?, content = ?, is_right = ?, order_id = ?";
+                $stmt = $this->conn->prepare($sqlQuery);
+                $stmt->bind_param("isii", $question_id, $questionData->answer4,
+                    $questionData->answer4_correct, 4);
+                if (!$stmt->execute()) {
+                    return false;
+                }
             } else {
                 return false;
             }
