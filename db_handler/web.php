@@ -34,12 +34,20 @@ class DbHandler {
 
     public function publishQuizz($quizzData, $quizzQuestionsData)
     {
+        // parse quizz data
         $quizzData = json_decode($quizzData);
         // get quizz data
         // get quizz title
         $quizzData->title;
         // get quizz visibility
         $quizzData->visibility;
+
+        // parse quizz questions data
+        $quizzQuestionsData = json_decode($quizzQuestionsData);
+        // going through each question
+        foreach ($quizzQuestionsData as $value) {
+            echo $value->content . '<br>';
+        }
 
     }
 
