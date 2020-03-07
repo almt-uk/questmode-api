@@ -87,18 +87,32 @@ class DbHandler {
 
         if (!$response["error"])
         {
-            //upload question first
-            $sqlQuery = "INSERT INTO quizzes SET title = ?, visibility = ?, creator_id = ?";
-            $stmt = $this->conn->prepare($sqlQuery);
-            $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility, $uid);
-            if ($stmt->execute()) {
-                $insert_id = $stmt->insert_id;
-            } else {
-                return false;
+            //upload quizz data
+            $insert_id = $this->quizzCreate($quizzData, $uid);
+            if($insert_id == NULL)
+            {
+                $response["error"] = true;
+                $response["errorCreate"] = "Please try again";
+            }
+            else
+            {
+                
             }
 
         }
 
+    }
+
+    private function quizzCreate($quizzData, $uid)
+    {
+        $sqlQuery = "INSERT INTO quizzes SET title = ?, visibility = ?, creator_id = ?";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility, $uid);
+        if ($stmt->execute()) {
+            return $stmt->insert_id;
+        } else {
+            return false;
+        }
     }
 
 }
