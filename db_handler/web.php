@@ -20,7 +20,7 @@ class DbHandler {
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("ss", $api_key, $api_password);
         if ($stmt->execute()) {
-            $stmt->fetch();
+            $dataRows = fetchData($stmt);
             if ($client_id) {
                 return true;
             } else {
