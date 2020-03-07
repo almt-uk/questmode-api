@@ -92,12 +92,7 @@ class DbHandler {
             $stmt = $this->conn->prepare($sqlQuery);
             $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility, $uid);
             if ($stmt->execute()) {
-                $dataRows = fetchData($stmt);
-                if (count($dataRows) == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
+                $insert_id = $stmt->insert_id;
             } else {
                 return false;
             }
