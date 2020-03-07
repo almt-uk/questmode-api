@@ -16,7 +16,7 @@ class DbHandler {
     public function checkApi($api_key, $api_password)
     {
         
-        $sqlQuery = "SELECT 1 FROM api_clients WHERE api_key = ? AND api_password= ?";
+        $sqlQuery = "SELECT 1 FROM api_clients WHERE api_key = ? AND api_password = ?";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("ss", $api_key, $api_password);
         if ($stmt->execute()) {
