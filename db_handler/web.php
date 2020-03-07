@@ -88,7 +88,20 @@ class DbHandler {
         if (!$response["error"])
         {
             //upload question first
-            $sqlQuery = "INSERT INTO api_key = ? AND api_password = ?";
+            $sqlQuery = "INSERT INTO quizzes SET title = ?, visibility = ?, creator_id = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+            $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility);
+            if ($stmt->execute()) {
+                $dataRows = fetchData($stmt);
+                if (count($dataRows) == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+
         }
 
     }
