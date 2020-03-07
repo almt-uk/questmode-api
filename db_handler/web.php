@@ -35,7 +35,6 @@ class DbHandler {
     public function publishQuizz($quizzData, $quizzQuestionsData)
     {
         $quizzData = json_decode($quizzData);
-        $quizzData = json_decode($quizzData);
         // get quizz data
         // get quizz title
         $quizzData->title;
