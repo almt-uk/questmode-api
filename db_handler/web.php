@@ -202,6 +202,7 @@ class DbHandler {
     }
 
 }
+
 $db = new DbHandler();
 $db->create();
 
