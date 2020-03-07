@@ -45,8 +45,15 @@ class DbHandler {
         // parse quizz questions data
         $quizzQuestionsData = json_decode($quizzQuestionsData);
         // going through each question
-        foreach ($quizzQuestionsData as $value) {
-            echo $value->content . '<br>';
+        foreach ($quizzQuestionsData as $questionData) {
+            $questionData->content;
+            $questionData->experience;
+            $questionData->image_url;
+            $questionData->answer1;
+            $questionData->answer2;
+            $questionData->answer3;
+            $questionData->answer4;
+            $questionData->content;
         }
 
     }
