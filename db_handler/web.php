@@ -90,7 +90,7 @@ class DbHandler {
             //upload question first
             $sqlQuery = "INSERT INTO quizzes SET title = ?, visibility = ?, creator_id = ?";
             $stmt = $this->conn->prepare($sqlQuery);
-            $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility);
+            $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility, $uid);
             if ($stmt->execute()) {
                 $dataRows = fetchData($stmt);
                 if (count($dataRows) == 1) {
