@@ -96,7 +96,7 @@ class DbHandler {
             }
             else
             {
-                $this->quizzCreateQuestions($quizzQuestionsData, $uid);
+                $this->quizzCreateQuestions($quizzQuestionsData, $insert_id);
             }
 
         }
@@ -116,16 +116,33 @@ class DbHandler {
         }
     }
 
-    private function quizzCreateQuestions($quizzQuestionsData, $uid)
+    private function quizzCreateQuestions($quizzQuestionsData, $insert_id)
     {
-        $quizzData = json_decode($quizzData);
-        $sqlQuery = "INSERT INTO quizzes SET title = ?, visibility = ?, creator_id = ?";
-        $stmt = $this->conn->prepare($sqlQuery);
-        $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility, $uid);
-        if ($stmt->execute()) {
-            return $stmt->insert_id;
-        } else {
-            return false;
+        $quizzQuestionsData = json_decode($quizzQuestionsData);
+        // going through each question
+        foreach ($quizzQuestionsData as $questionData) {
+            $questionData->content;
+            $questionData->experience;
+            $questionData->image_url;
+            $questionData->answer1;
+            $questionData->answer2;
+            $questionData->answer3;
+            $questionData->answer4;
+            $questionData->answer1_correct;
+            $questionData->answer2_correct;
+            $questionData->answer3_correct;
+            $questionData->answer4_correct;
+            $questionData->time_question;
+            $questionData->time_answer;
+            $questionData->time_results;
+            $sqlQuery = "INSERT INTO quizzes SET title = ?, visibility = ?, creator_id = ?";
+            $stmt = $this->conn->prepare($sqlQuery);
+            $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility, $uid);
+            if ($stmt->execute()) {
+                return $stmt->insert_id;
+            } else {
+                return false;
+            }
         }
     }
 
