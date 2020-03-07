@@ -37,6 +37,7 @@ class DbHandler {
         
         // prepare the response array
         $response = array();
+        $response["error"] = false;
 
         // parse quizz data
         $quizzData = json_decode($quizzData);
