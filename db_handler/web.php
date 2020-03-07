@@ -36,10 +36,7 @@ class DbHandler {
     {
         // parse quizz data
         $quizzData = json_decode($quizzData);
-        // get quizz data
-        // get quizz title
         $quizzData->title;
-        // get quizz visibility
         $quizzData->visibility;
 
         // parse quizz questions data
@@ -53,7 +50,13 @@ class DbHandler {
             $questionData->answer2;
             $questionData->answer3;
             $questionData->answer4;
-            $questionData->content;
+            $questionData->answer1_correct;
+            $questionData->answer2_correct;
+            $questionData->answer3_correct;
+            $questionData->answer4_correct;
+            $questionData->time_question;
+            $questionData->time_answer;
+            $questionData->time_results;
         }
 
     }
