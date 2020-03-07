@@ -70,7 +70,21 @@ class DbHandler {
             $questionData->time_question;
             $questionData->time_answer;
             $questionData->time_results;
+            if (empty($questionData->content) || empty($questionData->answer1) || empty($questionData->answer2)
+                || empty($questionData->answer3) || empty($questionData->answer4))
+            {
+                $response["error"] = true;
+                $response["errorQuestions"] = "Please check the questions data";
+            }
+            if ($questionData->time_question >= 20 || $questionData->time_answer >= 20 ||
+               $questionData->time_results >= 20)
+            {
+                $response["error"] = true;
+                $response["errorQuestions"] = "Please check the questions data";
+            }
         }
+
+        if ()
 
     }
 
