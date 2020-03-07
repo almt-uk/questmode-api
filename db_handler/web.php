@@ -85,7 +85,11 @@ class DbHandler {
             }
         }
 
-        if ()
+        if (!$response["error"])
+        {
+            //upload question first
+            
+        }
 
     }
 
