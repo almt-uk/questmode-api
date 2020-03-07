@@ -13,9 +13,9 @@ class DbHandler {
         $this->conn = $db->connect();
     }
 
-    public function checkApi()
+    public function checkApi($api_key, $api_password)
     {
-        
+
     }
 
     public function publishQuizz()
