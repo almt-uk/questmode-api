@@ -21,7 +21,7 @@ class DbHandler {
         $stmt->bind_param("ss", $api_key, $api_password);
         if ($stmt->execute()) {
             $dataRows = fetchData($stmt);
-            if ($client_id) {
+            if (count($dataRows) == 1) {
                 return true;
             } else {
                 return false;
