@@ -135,9 +135,12 @@ class DbHandler {
             $questionData->time_question;
             $questionData->time_answer;
             $questionData->time_results;
-            $sqlQuery = "INSERT INTO quizzes SET title = ?, visibility = ?, creator_id = ?";
+            $sqlQuery = "INSERT INTO questions
+                SET content = ?, experience = ?, image = ?, quizz_id = ?,
+                time_question = ?, time_answer = ?, time_results = ?";
             $stmt = $this->conn->prepare($sqlQuery);
-            $stmt->bind_param("sii", $quizzData->title, $quizzData->visibility, $uid);
+            $stmt->bind_param("sisiiii", $questionData->content, $questionData->experience,
+                $insert_id, $questionData->experience, $questionData->experience);
             if ($stmt->execute()) {
                 return $stmt->insert_id;
             } else {
