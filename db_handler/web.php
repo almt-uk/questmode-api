@@ -36,9 +36,10 @@ class DbHandler {
     {
         $quizzData = json_decode($quizzData);
         $quizzData = json_decode($quizzData);
-        //get quizz data
+        // get quizz data
         // get quizz title
         $quizzData->title;
+        // get quizz visibility
         $quizzData->visibility;
 
     }
