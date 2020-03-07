@@ -34,10 +34,23 @@ class DbHandler {
 
     public function publishQuizz($quizzData, $quizzQuestionsData)
     {
+        
+        // prepare the response array
+        $response = array();
+
         // parse quizz data
         $quizzData = json_decode($quizzData);
         $quizzData->title;
         $quizzData->visibility;
+        if (!empty($quizzData->title) && ($quizzData->visibility == 0 || $quizzData->visibility == 1))
+        {
+            // no error
+        }
+        else
+        {
+            $response["error"] = true;
+            $response["errorQuizzData"] = "Please check the quizz title and/or visibility";
+        }
 
         // parse quizz questions data
         $quizzQuestionsData = json_decode($quizzQuestionsData);
