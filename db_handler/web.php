@@ -88,7 +88,7 @@ class DbHandler {
         if (!$response["error"])
         {
             //upload quizz data
-            $insert_id = $this->quizzCreate($quizzData, $uid);
+            $insert_id = $this->quizzCreate(json_encode($quizzData), $uid);
             if($insert_id == NULL)
             {
                 $response["error"] = true;
@@ -96,7 +96,7 @@ class DbHandler {
             }
             else
             {
-                $succeedQuestion = $this->quizzCreateQuestions($quizzQuestionsData, $insert_id);
+                $succeedQuestion = $this->quizzCreateQuestions(json_encode($quizzQuestionsData), $insert_id);
                 if(!$succeedQuestion)
                 {
                     $response["error"] = true;
@@ -106,7 +106,6 @@ class DbHandler {
 
         }
 
-        $stmt->close();
         return $response;
 
     }
@@ -120,6 +119,7 @@ class DbHandler {
         if ($stmt->execute()) {
             return $stmt->insert_id;
         } else {
+            $stmt->close();
             return false;
         }
     }
@@ -147,48 +147,62 @@ class DbHandler {
                 SET content = ?, experience = ?, image = ?, quizz_id = ?,
                 time_question = ?, time_answer = ?, time_results = ?";
             $stmt = $this->conn->prepare($sqlQuery);
-            $stmt->bind_param("sisiiii", $questionData->content, $questionData->experience,
+            $stmt->bind_param("sisiiii", $questionData->content, $questionData->experience,  $questionData->image_url,
                 $insert_id, $questionData->time_question, $questionData->time_answer, $questionData->time_results);
             if ($stmt->execute()) {
                 $question_id = $stmt->insert_id;
                 $sqlQuery = "INSERT INTO answers
                     SET question_id = ?, content = ?, is_right = ?, order_id = ?";
                 $stmt = $this->conn->prepare($sqlQuery);
+                $answerCount = 1;
                 $stmt->bind_param("isii", $question_id, $questionData->answer1,
-                    $questionData->answer1_correct, 1);
+                    $questionData->answer1_correct, $answerCount);
                 if (!$stmt->execute()) {
+                    $stmt->close();
                     return false;
                 }
+                $answerCount++;
                 $sqlQuery = "INSERT INTO answers
                     SET question_id = ?, content = ?, is_right = ?, order_id = ?";
                 $stmt = $this->conn->prepare($sqlQuery);
                 $stmt->bind_param("isii", $question_id, $questionData->answer2,
-                    $questionData->answer2_correct, 2);
+                    $questionData->answer2_correct, $answerCount);
                 if (!$stmt->execute()) {
+                    $stmt->close();
                     return false;
                 }
+                $answerCount++;
                 $sqlQuery = "INSERT INTO answers
                     SET question_id = ?, content = ?, is_right = ?, order_id = ?";
                 $stmt = $this->conn->prepare($sqlQuery);
                 $stmt->bind_param("isii", $question_id, $questionData->answer3,
-                    $questionData->answer3_correct, 3);
+                    $questionData->answer3_correct, $answerCount);
                 if (!$stmt->execute()) {
+                    $stmt->close();
                     return false;
                 }
+                $answerCount++;
                 $sqlQuery = "INSERT INTO answers
                     SET question_id = ?, content = ?, is_right = ?, order_id = ?";
                 $stmt = $this->conn->prepare($sqlQuery);
                 $stmt->bind_param("isii", $question_id, $questionData->answer4,
-                    $questionData->answer4_correct, 4);
+                    $questionData->answer4_correct, $answerCount);
                 if (!$stmt->execute()) {
+                    $stmt->close();
                     return false;
                 }
             } else {
+                $stmt->close();
                 return false;
             }
         }
+        
+        $stmt->close();
+        return true;
     }
 
 }
+$db = new DbHandler();
+$db->create();
 
 ?>
