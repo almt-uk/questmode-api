@@ -140,7 +140,7 @@ class DbHandler {
                 time_question = ?, time_answer = ?, time_results = ?";
             $stmt = $this->conn->prepare($sqlQuery);
             $stmt->bind_param("sisiiii", $questionData->content, $questionData->experience,
-                $insert_id, $questionData->experience, $questionData->experience);
+                $insert_id, $questionData->time_question, $questionData->time_answer, $questionData->time_results);
             if ($stmt->execute()) {
                 return $stmt->insert_id;
             } else {
