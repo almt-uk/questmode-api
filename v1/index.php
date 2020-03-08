@@ -10,21 +10,34 @@ require '.././libs/Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
 
 $app = new \Slim\Slim();
-$app->post('/unity/user/login', function() use ($app) {
+$app->post('/unity/get/skills', function() use ($app) {
     // check for required params
 
-    verifyRequiredParams(array('api_key', 'api_password'));
+    verifyRequiredParams(array('api_key', 'api_password', 'user_id'));
 
     $api_key = $app->request->post('api_key');
     $api_password = $app->request->post('api_password');
+    $user_id = $app->request->post('user_id');
 
-    return 0;
+    $response = array();
     $db = new DbHandlerUnity();
     if($db->checkApi($api_key, $api_password)) {
-        $response = array();
-        echoResponse(200, "good api");
+        $response["error"] = false;
+        $skills = array();
+        $skill = array();
+        $skill["skill_id"] = 2332;
+        $skill["name"] = "Name?";
+        $skill["class_type"] = 2;
+        $skill["row"] = 2;
+        $skills[] = $skill;
+        $skills[] = $skill;
+        $skills[] = $skill;
+        $skills[] = $skill;
+        $response["skills"] = $skills;
+        echoResponse(200, $response);
     } else {
-        echoResponse(101, "error. wrong api");
+        $response["error"] = true;
+        echoResponse(101, $response);
     }
 
 });
