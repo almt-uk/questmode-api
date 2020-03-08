@@ -22,12 +22,12 @@ class DbHandlerWeb {
         if ($stmt->execute()) {
             $dataRows = fetchData($stmt);
             if (count($dataRows) == 1) {
-                return 1;
+                return $dataRows[0]["clearance_level"];
             } else {
-                return count($dataRows);
+                return 0;
             }
         } else {
-            return 2;
+            return 0;
         }
 
     }  
