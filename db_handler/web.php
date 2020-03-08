@@ -4,6 +4,7 @@ class DbHandlerWeb {
 
     private $conn;
     private $validSession = false;
+    private $clearance_level = 0;
 
     function __construct() {
         $path = $_SERVER['DOCUMENT_ROOT'];
@@ -23,8 +24,9 @@ class DbHandlerWeb {
         if ($stmt->execute()) {
             $dataRows = fetchData($stmt);
             if (count($dataRows) == 1) {
-                $this->$validSession = true;
-                return $dataRows[0]["clearance_level"];
+                $this->validSession = true;
+                $this->clearance_level = $dataRows[0]["clearance_level"];
+                return $this->clearance_level;
             } else {
                 return 0;
             }
@@ -40,6 +42,12 @@ class DbHandlerWeb {
         // prepare the response array
         $response = array();
         $response["error"] = false;
+        
+        if(!$this->validSession)
+        {
+            $response["error"] = true;
+            return $response;
+        }
 
         // parse quizz data
         $quizzData = json_decode($quizzData);
