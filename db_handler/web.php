@@ -203,7 +203,4 @@ class DbHandlerWeb {
 
 }
 
-$db = new DbHandler();
-$db->create();
-
 ?>
