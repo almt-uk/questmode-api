@@ -24,10 +24,10 @@ class DbHandlerWeb {
             if (count($dataRows) == 1) {
                 return 1;
             } else {
-                return 0;
+                return count($dataRows);
             }
         } else {
-            return 0;
+            return 2;
         }
 
     }  
