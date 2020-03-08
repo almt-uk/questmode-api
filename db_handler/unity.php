@@ -15,7 +15,7 @@ class DbHandlerUnity {
         $this->conn = $db->connect();
     }
 
-    public function checkApi($api_key, $api_password)
+    public function initializeAPI($api_key, $api_password)
     {
         
         $sqlQuery = "SELECT clearance_level FROM api_clients WHERE api_key = ? AND api_password = ?";
@@ -24,15 +24,17 @@ class DbHandlerUnity {
         if ($stmt->execute()) {
             $dataRows = fetchData($stmt);
             if (count($dataRows) == 1) {
-                return true;
+                $this->validSession = true;
+                $this->clearance_level = $dataRows[0]["clearance_level"];
+                return $this->clearance_level;
             } else {
-                return false;
+                return 0;
             }
         } else {
-            return false;
+            return 0;
         }
 
-    }  
+    }
 
 }
 
