@@ -3,6 +3,7 @@
 class DbHandlerWeb {
 
     private $conn;
+    private $validSession = false;
 
     function __construct() {
         $path = $_SERVER['DOCUMENT_ROOT'];
@@ -13,7 +14,7 @@ class DbHandlerWeb {
         $this->conn = $db->connect();
     }
 
-    public function checkApi($api_key, $api_password)
+    public function initializeAPI($api_key, $api_password)
     {
         
         $sqlQuery = "SELECT clearance_level FROM api_clients WHERE api_key = ? AND api_password = ?";
@@ -22,6 +23,7 @@ class DbHandlerWeb {
         if ($stmt->execute()) {
             $dataRows = fetchData($stmt);
             if (count($dataRows) == 1) {
+                $this->$validSession = true;
                 return $dataRows[0]["clearance_level"];
             } else {
                 return 0;
