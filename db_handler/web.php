@@ -34,7 +34,7 @@ class DbHandlerWeb {
             return 0;
         }
 
-    }  
+    }
 
     public function publishQuizz($quizzData, $quizzQuestionsData, $uid)
     {
@@ -42,7 +42,7 @@ class DbHandlerWeb {
         // prepare the response array
         $response = array();
         $response["error"] = false;
-        
+
         if(!$this->validSession)
         {
             $response["error"] = true;
