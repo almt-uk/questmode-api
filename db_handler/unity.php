@@ -3,6 +3,8 @@
 class DbHandlerUnity {
 
     private $conn;
+    private $validSession = false;
+    private $clearance_level = 0;
 
     function __construct() {
         $path = $_SERVER['DOCUMENT_ROOT'];
