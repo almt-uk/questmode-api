@@ -1,8 +1,10 @@
 <?php
 
-class DbHandler {
+class DbHandlerWeb {
 
     private $conn;
+    private $validSession = false;
+    private $clearance_level = 0;
 
     function __construct() {
         $path = $_SERVER['DOCUMENT_ROOT'];
@@ -13,24 +15,26 @@ class DbHandler {
         $this->conn = $db->connect();
     }
 
-    public function checkApi($api_key, $api_password)
+    public function initializeAPI($api_key, $api_password)
     {
         
-        $sqlQuery = "SELECT 1 FROM api_clients WHERE api_key = ? AND api_password = ?";
+        $sqlQuery = "SELECT clearance_level FROM api_clients WHERE api_key = ? AND api_password = ?";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("ss", $api_key, $api_password);
         if ($stmt->execute()) {
             $dataRows = fetchData($stmt);
             if (count($dataRows) == 1) {
-                return true;
+                $this->validSession = true;
+                $this->clearance_level = $dataRows[0]["clearance_level"];
+                return $this->clearance_level;
             } else {
-                return false;
+                return 0;
             }
         } else {
-            return false;
+            return 0;
         }
 
-    }  
+    }
 
     public function publishQuizz($quizzData, $quizzQuestionsData, $uid)
     {
@@ -38,6 +42,12 @@ class DbHandler {
         // prepare the response array
         $response = array();
         $response["error"] = false;
+
+        if(!$this->validSession)
+        {
+            $response["error"] = true;
+            return $response;
+        }
 
         // parse quizz data
         $quizzData = json_decode($quizzData);
@@ -202,8 +212,5 @@ class DbHandler {
     }
 
 }
-
-$db = new DbHandler();
-$db->create();
 
 ?>
