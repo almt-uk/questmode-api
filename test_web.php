@@ -5,7 +5,7 @@ require_once $path . '/db_handler/web.php';
 
 $db = new DbHandlerWeb();
 
-$checkAPI = $db->checkApi("0RMs4Z0pFV7TNk9hsctm7w0ZdV2QWm9yuOawQJZm", "0RMs4Z0pFV7TNk9hsctm7w0ZdV2QWm9yuOawQJZm");
+$checkAPI = $db->checkApi("xtoAkWqVGp4nDtW6tZL1AaJUCl9I3tYcqjfTBhSu", "PHZ7dh4vHtbJoF7kD2RtZQUxi3opTFeXvpa0Jp7R");
 
 echo $checkAPI;
 
