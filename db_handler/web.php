@@ -22,12 +22,12 @@ class DbHandlerWeb {
         if ($stmt->execute()) {
             $dataRows = fetchData($stmt);
             if (count($dataRows) == 1) {
-                return true;
+                return 1;
             } else {
-                return false;
+                return 0;
             }
         } else {
-            return false;
+            return 0;
         }
 
     }  
