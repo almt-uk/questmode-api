@@ -21,7 +21,8 @@ $app->post('/unity/get/skills', function() use ($app) {
 
     $response = array();
     $db = new DbHandlerUnity();
-    if($db->checkApi($api_key, $api_password)) {
+    $db->initializeAPI($api_key, $api_password);
+    if($db->validSession) {
         $response["error"] = false;
         $skills = array();
         $skill = array();
