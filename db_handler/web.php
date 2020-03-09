@@ -239,10 +239,16 @@ class DbHandlerWeb {
             }
             else
             {
-                
+                // institution don't exist
+                // not teacher -> you can not create the instituion
+                // return error 
+                $response["error"] = true;
+                $response["error"] = true;
+                return $response;  
             }                
         } else {
-            
+            $response["error"] = true;
+            return $response;              
         }
 
     }
