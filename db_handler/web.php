@@ -226,10 +226,10 @@ class DbHandlerWeb {
 
         if($isTeacher)
         {
+            $sqlQuery = "SELECT institution_id FROM educational_institutions WHERE name=?";
             if()
         }
 
-        $sqlQuery = "";
 
     }
 
