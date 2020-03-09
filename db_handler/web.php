@@ -231,14 +231,15 @@ class DbHandlerWeb {
             $institution_id = fetchData($stmt)[0];
             if($institution_id != NULL)
             {
-                
+                // insert
+            }
+            else if($isTeacher)
+            {
+                // create the instituion
             }
             else
             {
-                if($isTeacher)
-                {
-                    // create the instituion
-                }
+                
             }                
         } else {
             
