@@ -211,7 +211,7 @@ class DbHandlerWeb {
         return true;
     }
 
-    public function registerUser()
+    public function registerUser($email, $password, $username, $institutionName, $countryCode, $isTeacher)
     {
         
         // prepare the response array
@@ -223,7 +223,12 @@ class DbHandlerWeb {
             $response["error"] = true;
             return $response;
         }
-        
+
+        if($isTeacher)
+        {
+            if()
+        }
+
         $sqlQuery = "";
 
     }
