@@ -227,11 +227,18 @@ class DbHandlerWeb {
         $sqlQuery = "SELECT institution_id FROM educational_institutions WHERE name=?";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("s", $institutionName);
-        if ($stmt->execute()) {
+        if ($stmt->execute())
+        {
             $institution_id = fetchData($stmt)[0];
             if($institution_id != NULL)
             {
                 // insert
+                $sqlQuery = "SELECT institution_id FROM educational_institutions WHERE name=?";
+                $stmt = $this->conn->prepare($sqlQuery);
+                $stmt->bind_param("s", $institutionName);
+                if ($stmt->execute()) {
+                }
+
             }
             else if($isTeacher)
             {
@@ -245,7 +252,9 @@ class DbHandlerWeb {
                 $response["error"] = true;
                 return $response;  
             }                
-        } else {
+        }
+        else
+        {
             $response["error"] = true;
             return $response;              
         }
