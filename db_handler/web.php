@@ -211,6 +211,23 @@ class DbHandlerWeb {
         return true;
     }
 
+    public function registerUser()
+    {
+        
+        // prepare the response array
+        $response = array();
+        $response["error"] = false;
+
+        if(!$this->validSession)
+        {
+            $response["error"] = true;
+            return $response;
+        }
+        
+        $sqlQuery = "";
+
+    }
+
 }
 
 ?>
