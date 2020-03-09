@@ -224,19 +224,25 @@ class DbHandlerWeb {
             return $response;
         }
 
-        if($isTeacher)
-        {
-            $sqlQuery = "SELECT institution_id FROM educational_institutions WHERE name=?";
-            $stmt = $this->conn->prepare($sqlQuery);
-            $stmt->bind_param("s", $institutionName);
-            if ($stmt->execute()) {
-                
-            } else {
+        $sqlQuery = "SELECT institution_id FROM educational_institutions WHERE name=?";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bind_param("s", $institutionName);
+        if ($stmt->execute()) {
+            $institution_id = fetchData($stmt)[0];
+            if($institution_id != NULL)
+            {
                 
             }
-            if()
+            else
+            {
+                if($isTeacher)
+                {
+                    // create the instituion
+                }
+            }                
+        } else {
+            
         }
-
 
     }
 
