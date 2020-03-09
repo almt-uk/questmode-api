@@ -211,7 +211,7 @@ class DbHandlerWeb {
         return true;
     }
 
-    public function registerUser($email, $password, $username, $institutionName, $countryCode, $isTeacher)
+    public function registerUser($email, $password, $username, $institutionName, $countryCode)
     {
         
         // prepare the response array
@@ -224,6 +224,8 @@ class DbHandlerWeb {
             return $response;
         }
 
+        $isTeacher = $this->getIsTeacher($email);
+
         $sqlQuery = "SELECT institution_id FROM educational_institutions WHERE name=?";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("s", $institutionName);
@@ -232,18 +234,25 @@ class DbHandlerWeb {
             $institution_id = fetchData($stmt)[0];
             if($institution_id != NULL)
             {
-                // insert
+                //create user
+                $sqlQuery = "INSERT INTO users SET name=?, country_code=?";
+                $stmt = $this->conn->prepare($sqlQuery);
+                $stmt->bind_param("ss", $institutionName);
+                if ($stmt->execute())
+                {
+                    
+                }
+            }
+            else if($isTeacher)
+            {
+                // create the instituion
                 $sqlQuery = "INSERT INTO educational_institutions SET name=?, country_code=?";
                 $stmt = $this->conn->prepare($sqlQuery);
                 $stmt->bind_param("ss", $institutionName);
                 if ($stmt->execute())
                 {
+                    
                 }
-
-            }
-            else if($isTeacher)
-            {
-                // create the instituion
             }
             else
             {
