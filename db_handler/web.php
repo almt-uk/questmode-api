@@ -233,10 +233,11 @@ class DbHandlerWeb {
             if($institution_id != NULL)
             {
                 // insert
-                $sqlQuery = "SELECT institution_id FROM educational_institutions WHERE name=?";
+                $sqlQuery = "INSERT INTO educational_institutions SET name=?, country_code=?";
                 $stmt = $this->conn->prepare($sqlQuery);
-                $stmt->bind_param("s", $institutionName);
-                if ($stmt->execute()) {
+                $stmt->bind_param("ss", $institutionName);
+                if ($stmt->execute())
+                {
                 }
 
             }
