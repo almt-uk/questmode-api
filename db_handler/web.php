@@ -262,6 +262,19 @@ class DbHandlerWeb {
 
     }
 
+    private function getIsTeacher($email)
+    {
+        $domain_name = substr(strrchr($email, "@"), 1);
+        if (substr($domain_name, 0, 3) != "my.")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }
 
 ?>
