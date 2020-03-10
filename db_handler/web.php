@@ -239,9 +239,9 @@ class DbHandlerWeb {
         {
             if(fetchData($stmt) != NULL)
             {
-                $institution_id = fetchData($stmt)[0]["iid"];
+                // $institution_id = fetchData($stmt)[0]["iid"];
                 //create user
-                echo $institution_id;
+                echo fetchData($stmt);
                 $password = password_hash($password, PASSWORD_ARGON2I);
                 $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
                 $stmt = $this->conn->prepare($sqlQuery);
