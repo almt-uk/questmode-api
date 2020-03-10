@@ -306,6 +306,22 @@ class DbHandlerWeb {
         }
         $dataRows = fetchData($stmt);
         $stmt->close();
+        if($dataRows == null || count($dataRows)==0)
+        {
+            $response["error"] = true;
+            return $response;
+        }
+        $userData = json_decode(json_encode($dataRows[0]));
+        if (password_verify($password, $userData->password))
+        {
+            $response["userData"] = json_encode($userData);
+            return $response;
+        }
+        else
+        {
+            $response["error"] = true;
+            return $response;
+        }
 
     }
 
