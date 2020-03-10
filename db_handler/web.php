@@ -245,15 +245,7 @@ class DbHandlerWeb {
                 $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
                 $stmt = $this->conn->prepare($sqlQuery);
                 $stmt->bind_param("ssssii", $username, $countryCode, $email, $password, $institution_id, $isTeacher);
-                if ($stmt->execute())
-                {
-                    $user_id = $stmt->insert_id;
-                    $sqlQuery = "INSERT INTO players SET user_id=?";
-                    $stmt = $this->conn->prepare($sqlQuery);
-                    $stmt->bind_param("i", $user_id);
-                    $stmt->execute();
-                    echo $stmt->error;  
-                }
+                $stmt->execute();
             }
             else if($isTeacher == 1)
             {
@@ -296,6 +288,42 @@ class DbHandlerWeb {
             return 1;
         }
         return 0;
+    }
+
+    public function loginUser($email, $password)
+    {
+        
+        // prepare the response array
+        $response = array();
+        $response["error"] = false;
+
+        $stmt = $this->conn->prepare("SELECT user_id, is_teacher, class_type, password FROM users WHERE email=?");
+        $stmt->bind_param("s", $email);
+        if (!$stmt->execute()) {
+            $stmt->close();
+            $response["error"] = true;
+            return $response;
+        }
+        $dataRows = fetchData($stmt);
+        $stmt->close();
+        if($dataRows == null || count($dataRows)==0)
+        {
+            $response["error"] = true;
+            return $response;
+        }
+        $userData = json_decode(json_encode($dataRows[0]));
+        if (password_verify($password, $userData->password))
+        {
+            unset($userData->{"password"});
+            $response["userData"] = json_encode($userData);
+            return $response;
+        }
+        else
+        {
+            $response["error"] = true;
+            return $response;
+        }
+
     }
 
 }
