@@ -304,7 +304,6 @@ class DbHandlerWeb {
             $response["error"] = true;
             return $response;
         }
-        echo "here";
         $dataRows = fetchData($stmt);
         $stmt->close();
         if($dataRows == null || count($dataRows)==0)
