@@ -237,7 +237,7 @@ class DbHandlerWeb {
         $stmt->bind_param("s", $institutionName);
         if ($stmt->execute())
         {
-            if(fetchData($stmt) != NULL && count(fetchData($stmt) != 0)
+            if(fetchData($stmt) != NULL && count(fetchData($stmt)) != 0)
             {
                 // $institution_id = fetchData($stmt)[0]["iid"];
                 //create user
