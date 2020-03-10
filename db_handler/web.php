@@ -309,7 +309,7 @@ class DbHandlerWeb {
         $stmt->bind_param("s", $log_key);
         if (!$stmt->execute()) {
             $stmt->close();
-            $response["type"] = 101;
+            $response["error"] = true;
             return $response;
         }
         $dataRows = fetchData($stmt);
