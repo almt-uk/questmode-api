@@ -252,7 +252,6 @@ class DbHandlerWeb {
             }
             else if($isTeacher == 1)
             {
-                echo "here2";
                 // create the instituion
                 $sqlQuery = "INSERT INTO educational_institutions SET name=?, country=?";
                 $stmt = $this->conn->prepare($sqlQuery);
@@ -261,6 +260,10 @@ class DbHandlerWeb {
                 {
                     $institution_id = $stmt->insert_id;
                     echo $institution_id;         
+                }
+                else
+                {
+                    echo $stmt->error;
                 }
             }
             else
