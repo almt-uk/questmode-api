@@ -301,6 +301,10 @@ class DbHandlerWeb {
     public function loginUser($email, $password)
     {
         
+        // prepare the response array
+        $response = array();
+        $response["error"] = false;
+
         $stmt = $this->conn->prepare("SELECT user_id, password, account_closed, verified_email, authentication_type FROM users WHERE email = ?");
         $stmt->bind_param("s", $log_key);
         if (!$stmt->execute()) {
