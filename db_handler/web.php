@@ -234,7 +234,6 @@ class DbHandlerWeb {
 
         $sqlQuery = "SELECT institution_id FROM educational_institutions WHERE name=?";
         $stmt = $this->conn->prepare($sqlQuery);
-        $institutionName = "University of Northampton";
         $stmt->bind_param("s", $institutionName);
         if ($stmt->execute())
         {
