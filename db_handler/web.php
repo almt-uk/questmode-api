@@ -258,12 +258,7 @@ class DbHandlerWeb {
                 $stmt->bind_param("ss", $institutionName, $countryCode);
                 if ($stmt->execute())
                 {
-                    $institution_id = $stmt->insert_id;
-                    echo $institution_id;         
-                }
-                else
-                {
-                    echo $stmt->error;
+                    $institution_id = $stmt->insert_id;   
                 }
             }
             else
