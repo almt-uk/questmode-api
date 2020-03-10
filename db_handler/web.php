@@ -234,14 +234,16 @@ class DbHandlerWeb {
 
         $sqlQuery = "SELECT institution_id FROM educational_institutions WHERE name=?";
         $stmt = $this->conn->prepare($sqlQuery);
+        $institutionName = "University of Northampton";
         $stmt->bind_param("s", $institutionName);
         if ($stmt->execute())
         {
-            if(fetchData($stmt) != NULL && count(fetchData($stmt)) != 0)
+            $dataDB = fetchData($stmt);
+            if($dataDB!=NULL && count($dataDB) != 0)
             {
                 // $institution_id = fetchData($stmt)[0]["iid"];
-                //create user
-                echo count(fetchData($stmt));
+                    //create user
+                echo $dataDB[0]["institution_id"];
                 $password = password_hash($password, PASSWORD_ARGON2I);
                 $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
                 $stmt = $this->conn->prepare($sqlQuery);
