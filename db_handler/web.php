@@ -243,7 +243,7 @@ class DbHandlerWeb {
                     
                 }
             }
-            else if($isTeacher)
+            else if($isTeacher == 1)
             {
                 // create the instituion
                 $sqlQuery = "INSERT INTO educational_institutions SET name=?, country_code=?";
@@ -274,14 +274,11 @@ class DbHandlerWeb {
     private function getIsTeacher($email)
     {
         $domain_name = substr(strrchr($email, "@"), 1);
-        if (substr($domain_name, 0, 3) != "my.")
+        if ($domain_name != NULL && substr($domain_name, 0, 3) != "my.")
         {
-            return true;
+            return 1;
         }
-        else
-        {
-            return false;
-        }
+        return 0;
     }
 
 }
