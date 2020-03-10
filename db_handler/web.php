@@ -247,7 +247,12 @@ class DbHandlerWeb {
                 $stmt->bind_param("ssssii", $username, $countryCode, $email, $password, $institution_id, $isTeacher);
                 if ($stmt->execute())
                 {
-                                        
+                    $user_id = $stmt->insert_id;
+                    $sqlQuery = "INSERT INTO players SET user_id=?";
+                    $stmt = $this->conn->prepare($sqlQuery);
+                    $stmt->bind_param("i", $user_id);
+                    $stmt->execute();
+                    echo $stmt->error;  
                 }
             }
             else if($isTeacher == 1)
@@ -258,7 +263,12 @@ class DbHandlerWeb {
                 $stmt->bind_param("ss", $institutionName, $countryCode);
                 if ($stmt->execute())
                 {
-                    $institution_id = $stmt->insert_id;   
+                    $institution_id = $stmt->insert_id;
+                    $password = password_hash($password, PASSWORD_ARGON2I);
+                    $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
+                    $stmt = $this->conn->prepare($sqlQuery);
+                    $stmt->bind_param("ssssii", $username, $countryCode, $email, $password, $institution_id, $isTeacher);
+                    $stmt->execute();
                 }
             }
             else
