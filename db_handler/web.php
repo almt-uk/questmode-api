@@ -239,7 +239,6 @@ class DbHandlerWeb {
         {
             if(fetchData($stmt) != NULL)
             {
-                echo "here2";
                 $institution_id = fetchData($stmt)[0]["iid"];
                 //create user
                 $password = password_hash($password, PASSWORD_ARGON2I);
@@ -253,6 +252,7 @@ class DbHandlerWeb {
             }
             else if($isTeacher == 1)
             {
+                echo "here2";
                 // create the instituion
                 $sqlQuery = "INSERT INTO educational_institutions SET name=?, country=?";
                 $stmt = $this->conn->prepare($sqlQuery);
