@@ -237,9 +237,9 @@ class DbHandlerWeb {
         $stmt->bind_param("s", $institutionName);
         if ($stmt->execute())
         {
-            echo "here";
             if(fetchData($stmt) != NULL)
             {
+                echo "here2";
                 $institution_id = fetchData($stmt)[0]["iid"];
                 //create user
                 $password = password_hash($password, PASSWORD_ARGON2I);
