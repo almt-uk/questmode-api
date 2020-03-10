@@ -298,6 +298,11 @@ class DbHandlerWeb {
         return 0;
     }
 
+    public function loginUser($email, $password)
+    {
+
+    }
+
 }
 
 ?>
