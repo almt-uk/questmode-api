@@ -305,6 +305,7 @@ class DbHandlerWeb {
         $response = array();
         $response["error"] = false;
 
+        $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
         $stmt = $this->conn->prepare("SELECT user_id, password, account_closed, verified_email, authentication_type FROM users WHERE email = ?");
         $stmt->bind_param("s", $log_key);
         if (!$stmt->execute()) {
