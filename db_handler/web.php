@@ -238,8 +238,8 @@ class DbHandlerWeb {
                 $stmt->bind_param("ss", $institutionName);
                 if ($stmt->execute())
                 {
+                    $institution_id = $stmt->insert_id;
                 }
-
             }
             else if($isTeacher)
             {
