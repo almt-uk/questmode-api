@@ -247,7 +247,7 @@ class DbHandlerWeb {
                 $stmt->bind_param("ssssii", $username, $countryCode, $email, $password, $institution_id, $isTeacher);
                 if ($stmt->execute())
                 {
-                    
+                                        
                 }
             }
             else if($isTeacher == 1)
