@@ -297,7 +297,7 @@ class DbHandlerWeb {
         $response = array();
         $response["error"] = false;
 
-        $stmt = $this->conn->email("SELECT user_id, is_teacher, class_type, password FROM users WHERE email=?");
+        $stmt = $this->conn->prepare("SELECT user_id, is_teacher, class_type, password FROM users WHERE email=?");
         $stmt->bind_param("s", $log_key);
         if (!$stmt->execute()) {
             $stmt->close();
