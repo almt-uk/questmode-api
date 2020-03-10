@@ -232,7 +232,7 @@ class DbHandlerWeb {
 
         $isTeacher = $this->getIsTeacher($email);
 
-        $sqlQuery = "SELECT institution_id AS iid FROM educational_institutions WHERE name=?";
+        $sqlQuery = "SELECT institution_id FROM educational_institutions WHERE name=?";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("s", $institutionName);
         if ($stmt->execute())
@@ -241,7 +241,7 @@ class DbHandlerWeb {
             {
                 // $institution_id = fetchData($stmt)[0]["iid"];
                 //create user
-                echo fetchData($stmt);
+                echo count(fetchData($stmt));
                 $password = password_hash($password, PASSWORD_ARGON2I);
                 $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
                 $stmt = $this->conn->prepare($sqlQuery);
