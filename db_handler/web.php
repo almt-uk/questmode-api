@@ -235,9 +235,9 @@ class DbHandlerWeb {
         $sqlQuery = "SELECT institution_id AS iid FROM educational_institutions WHERE name=?";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("s", $institutionName);
-        echo "here";
         if ($stmt->execute())
         {
+            echo "here";
             if(fetchData($stmt) != NULL)
             {
                 $institution_id = fetchData($stmt)[0]["iid"];
