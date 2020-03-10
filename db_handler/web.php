@@ -298,12 +298,13 @@ class DbHandlerWeb {
         $response["error"] = false;
 
         $stmt = $this->conn->prepare("SELECT user_id, is_teacher, class_type, password FROM users WHERE email=?");
-        $stmt->bind_param("s", $log_key);
+        $stmt->bind_param("s", $email);
         if (!$stmt->execute()) {
             $stmt->close();
             $response["error"] = true;
             return $response;
         }
+        echo "here";
         $dataRows = fetchData($stmt);
         $stmt->close();
         if($dataRows == null || count($dataRows)==0)
