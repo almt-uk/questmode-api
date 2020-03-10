@@ -251,7 +251,7 @@ class DbHandlerWeb {
                     $sqlQuery = "INSERT INTO players SET user_id=?";
                     $stmt = $this->conn->prepare($sqlQuery);
                     $stmt->bind_param("i", $user_id);
-                    $stmt->execute()
+                    $stmt->execute();
                                   
                 }
             }
