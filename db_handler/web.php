@@ -10,6 +10,7 @@ class DbHandlerWeb {
         $path = $_SERVER['DOCUMENT_ROOT'];
         require_once $path . '/include/db_connect.php';
         require_once $path . '/libs/Utils/utils.php';
+        require_once $path . '/libs/Utils/ip_details.php';
         // opening db connection
         $db = new DbConnect();
         $this->conn = $db->connect();
@@ -223,6 +224,11 @@ class DbHandlerWeb {
             $response["error"] = true;
             return $response;
         }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+        {
+            $response["error"] = true;
+            return $response;
+        }
 
         $isTeacher = $this->getIsTeacher($email);
 
@@ -231,27 +237,28 @@ class DbHandlerWeb {
         $stmt->bind_param("s", $institutionName);
         if ($stmt->execute())
         {
-            $institution_id = fetchData($stmt)[0];
-            if($institution_id != NULL)
+            $dataDB = fetchData($stmt);
+            if($dataDB!=NULL && count($dataDB) != 0)
             {
-                //create user
-                $sqlQuery = "INSERT INTO users SET name=?, country_code=?";
+                $institution_id = $dataDB[0]["institution_id"];
+                $password = password_hash($password, PASSWORD_ARGON2I);
+                $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
                 $stmt = $this->conn->prepare($sqlQuery);
-                $stmt->bind_param("ss", $institutionName);
+                $stmt->bind_param("ssssii", $username, $countryCode, $email, $password, $institution_id, $isTeacher);
                 if ($stmt->execute())
                 {
-                    $institution_id = $stmt->insert_id;
+                                        
                 }
             }
             else if($isTeacher == 1)
             {
                 // create the instituion
-                $sqlQuery = "INSERT INTO educational_institutions SET name=?, country_code=?";
+                $sqlQuery = "INSERT INTO educational_institutions SET name=?, country=?";
                 $stmt = $this->conn->prepare($sqlQuery);
-                $stmt->bind_param("ss", $institutionName);
+                $stmt->bind_param("ss", $institutionName, $countryCode);
                 if ($stmt->execute())
                 {
-                    
+                    $institution_id = $stmt->insert_id;   
                 }
             }
             else
