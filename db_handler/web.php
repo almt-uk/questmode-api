@@ -252,7 +252,7 @@ class DbHandlerWeb {
                     $stmt = $this->conn->prepare($sqlQuery);
                     $stmt->bind_param("i", $user_id);
                     $stmt->execute();
-                                  
+                    echo $stmt->error;  
                 }
             }
             else if($isTeacher == 1)
