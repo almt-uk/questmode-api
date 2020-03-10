@@ -314,6 +314,7 @@ class DbHandlerWeb {
         $userData = json_decode(json_encode($dataRows[0]));
         if (password_verify($password, $userData->password))
         {
+            unset($userData->{"password"});
             $response["userData"] = json_encode($userData);
             return $response;
         }
