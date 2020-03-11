@@ -361,14 +361,16 @@ class DbHandlerWeb {
         }
         $quizzData = json_decode(json_encode($dataRows[0]));
         $response["quizzData"] = json_encode($quizzData);
-        $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
+        $sqlQuery = "INSERT INTO quizz_session SET nickname=?, quizz_id=?";
         $stmt = $this->conn->prepare($sqlQuery);
-        $stmt->bind_param("ssssii", $username, $countryCode, $email, $password, $institution_id, $isTeacher);
+        $stmt->bind_param("si", $quizzNickname, $quizzCode);
         if (!$stmt->execute()) {
             $stmt->close();
             $response["error"] = true;
             return $response;
         }
+        $session_id = $stmt->insert_id;
+        $response["session_id"] = $session_id;
 
     }
 
