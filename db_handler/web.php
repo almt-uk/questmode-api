@@ -451,16 +451,15 @@ class DbHandlerWeb {
             WHERE PA.question_id=?
             AND A.order_id=?";
         $stmt = $this->conn->prepare($sqlQuery);
-        $stmt->bind_param("ii", $question_id, $answerOrder);
+        $stmt->bind_param("ii", $question_id, $answer_order);
         if (!$stmt->execute()) {
             $stmt->close();
             $response["error"] = true;
             return $response;
         }
-        $questionAnswersData = fetchData($stmt);
-        $question = json_encode($question);
-        $question["questionAnswersData"] = $questionAnswersData;
-        $questionRowsData[] = $question;
+        $no_answers = count(fetchData($stmt));
+        $response["no_answers"] = $no_answers;
+        return $response;
 
     }
 
