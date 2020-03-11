@@ -409,6 +409,25 @@ class DbHandlerWeb {
     public function answerQuestion($quizz_session_id, $answer_id, $question_id)
     {
         
+        // prepare the response array
+        $response = array();
+        $response["error"] = false;
+
+        if(!$this->validSession)
+        {
+            $response["error"] = true;
+            return $response;
+        }
+        
+        $sqlQuery = "INSERT INTO quizz_session SET nickname=?, quizz_id=?";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bind_param("si", $quizzNickname, $quizzCode);
+        if (!$stmt->execute()) {
+            $stmt->close();
+            $response["error"] = true;
+            return $response;
+        }
+
     }
 
 }
