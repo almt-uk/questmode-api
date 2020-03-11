@@ -212,7 +212,7 @@ class DbHandlerWeb {
         return true;
     }
 
-    public function registerUser($email, $password, $username, $institutionName, $countryCode)
+    public function registerUser($email, $password, $username, $institutionName, $countryCode, $heroSelected)
     {
         
         // prepare the response array
@@ -242,9 +242,9 @@ class DbHandlerWeb {
             {
                 $institution_id = $dataDB[0]["institution_id"];
                 $password = password_hash($password, PASSWORD_ARGON2I);
-                $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
+                $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?, class_type=?";
                 $stmt = $this->conn->prepare($sqlQuery);
-                $stmt->bind_param("ssssii", $username, $countryCode, $email, $password, $institution_id, $isTeacher);
+                $stmt->bind_param("ssssiii", $username, $countryCode, $email, $password, $institution_id, $isTeacher, $heroSelected);
                 $stmt->execute();
             }
             else if($isTeacher == 1)
@@ -257,9 +257,9 @@ class DbHandlerWeb {
                 {
                     $institution_id = $stmt->insert_id;
                     $password = password_hash($password, PASSWORD_ARGON2I);
-                    $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
+                    $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?, class_type=?";
                     $stmt = $this->conn->prepare($sqlQuery);
-                    $stmt->bind_param("ssssii", $username, $countryCode, $email, $password, $institution_id, $isTeacher);
+                    $stmt->bind_param("ssssiii", $username, $countryCode, $email, $password, $institution_id, $isTeacher, $heroSelected);
                     $stmt->execute();
                 }
             }
