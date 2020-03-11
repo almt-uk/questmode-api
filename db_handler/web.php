@@ -406,6 +406,11 @@ class DbHandlerWeb {
 
     }
 
+    public function answerQuestion($quizz_session_id, $answer_id, $question_id)
+    {
+        
+    }
+
 }
 
 ?>
