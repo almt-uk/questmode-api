@@ -297,6 +297,12 @@ class DbHandlerWeb {
         $response = array();
         $response["error"] = false;
 
+        if(!$this->validSession)
+        {
+            $response["error"] = true;
+            return $response;
+        }
+
         $stmt = $this->conn->prepare("SELECT user_id, is_teacher, class_type, password FROM users WHERE email=?");
         $stmt->bind_param("s", $email);
         if (!$stmt->execute()) {
@@ -319,6 +325,21 @@ class DbHandlerWeb {
             return $response;
         }
         else
+        {
+            $response["error"] = true;
+            return $response;
+        }
+
+    }
+
+    public function joinQuizz($quizzCode, $quizzNickname)
+    {
+        
+        // prepare the response array
+        $response = array();
+        $response["error"] = false;
+
+        if(!$this->validSession)
         {
             $response["error"] = true;
             return $response;
