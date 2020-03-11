@@ -344,6 +344,16 @@ class DbHandlerWeb {
             $response["error"] = true;
             return $response;
         }
+        
+        $stmt = $this->conn->prepare("SELECT user_id, is_teacher, class_type, password FROM users WHERE email=?");
+        $stmt->bind_param("s", $email);
+        if (!$stmt->execute()) {
+            $stmt->close();
+            $response["error"] = true;
+            return $response;
+        }
+        $dataRows = fetchData($stmt);
+        $stmt->close();
 
     }
 
