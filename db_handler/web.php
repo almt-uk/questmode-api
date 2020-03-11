@@ -431,6 +431,35 @@ class DbHandlerWeb {
 
     }
 
+    public function getPlayersByAnswerChose()
+    {
+        
+        // prepare the response array
+        $response = array();
+        $response["error"] = false;
+
+        if(!$this->validSession)
+        {
+            $response["error"] = true;
+            return $response;
+        }
+        
+        $sqlQuery = "SELECT answer_id, question_id, content, is_right, order_id
+            FROM player_answers WHERE question_id=?";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bind_param("i", $question_id);
+        if (!$stmt->execute()) {
+            $stmt->close();
+            $response["error"] = true;
+            return $response;
+        }
+        $questionAnswersData = fetchData($stmt);
+        $question = json_encode($question);
+        $question["questionAnswersData"] = $questionAnswersData;
+        $questionRowsData[] = $question;
+
+    }
+
 }
 
 ?>
