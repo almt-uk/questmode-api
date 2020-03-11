@@ -381,6 +381,11 @@ class DbHandlerWeb {
             $response["error"] = true;
             return $response;
         }
+        $questionRows = fetchData($stmt);
+        foreach($questionRows as $question){
+            $question = json_decode(json_encode($question));
+            $question_id = $question->question_id;
+        }
 
     }
 
