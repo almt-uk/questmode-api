@@ -382,10 +382,27 @@ class DbHandlerWeb {
             return $response;
         }
         $questionRows = fetchData($stmt);
+        $questionRowsData = []
         foreach($questionRows as $question){
             $question = json_decode(json_encode($question));
             $question_id = $question->question_id;
+            $sqlQuery = "SELECT answer_id, question_id, content, is_right, order_id
+                FROM answers WHERE question_id=?
+                ORDER BY order_id ASC";
+            $stmt = $this->conn->prepare($sqlQuery);
+            $stmt->bind_param("i", $question_id);
+            if (!$stmt->execute()) {
+                $stmt->close();
+                $response["error"] = true;
+                return $response;
+            }
+            $questionAnswersData = fetchData($stmt);
+            $question = json_encode($question);
+            $question["questionAnswersData"] = $questionAnswersData;
+            $questionRowsData[] = $question;
         }
+        $response["questionRowsData"] = $questionRowsData;
+        return $response;
 
     }
 
