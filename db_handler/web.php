@@ -431,7 +431,7 @@ class DbHandlerWeb {
 
     }
 
-    public function getPlayersByAnswerChose()
+    public function getPlayersByAnswerChose($question_id, $answer_order)
     {
         
         // prepare the response array
@@ -451,7 +451,7 @@ class DbHandlerWeb {
             WHERE PA.question_id=?
             AND A.order_id=?";
         $stmt = $this->conn->prepare($sqlQuery);
-        $stmt->bind_param("i", $question_id);
+        $stmt->bind_param("ii", $question_id, $answerOrder);
         if (!$stmt->execute()) {
             $stmt->close();
             $response["error"] = true;
