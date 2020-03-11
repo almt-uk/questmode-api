@@ -445,7 +445,9 @@ class DbHandlerWeb {
         }
         
         $sqlQuery = "SELECT answer_id, question_id, content, is_right, order_id
-            FROM player_answers WHERE question_id=?";
+            FROM player_answers
+            INNER JOIN 
+            WHERE question_id=?";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("i", $question_id);
         if (!$stmt->execute()) {
