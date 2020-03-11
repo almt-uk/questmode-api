@@ -421,12 +421,13 @@ class DbHandlerWeb {
 
         $sqlQuery = "INSERT INTO player_answers SET answer_id=?, quizz_session_id=?, question_id=?";
         $stmt = $this->conn->prepare($sqlQuery);
-        $stmt->bind_param("si", $quizzNickname, $quizzCode);
+        $stmt->bind_param("iii", $answer_id, $quizz_session_id, $question_id);
         if (!$stmt->execute()) {
             $stmt->close();
             $response["error"] = true;
             return $response;
         }
+        return $response;
 
     }
 
