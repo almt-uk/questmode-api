@@ -418,8 +418,8 @@ class DbHandlerWeb {
             $response["error"] = true;
             return $response;
         }
-        
-        $sqlQuery = "INSERT INTO quizz_session SET nickname=?, quizz_id=?";
+
+        $sqlQuery = "INSERT INTO player_answers SET answer_id=?, quizz_session_id=?, question_id=?";
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("si", $quizzNickname, $quizzCode);
         if (!$stmt->execute()) {
