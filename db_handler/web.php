@@ -344,16 +344,31 @@ class DbHandlerWeb {
             $response["error"] = true;
             return $response;
         }
-        
-        $stmt = $this->conn->prepare("SELECT user_id, is_teacher, class_type, password FROM users WHERE email=?");
-        $stmt->bind_param("s", $email);
+
+        $stmt = $this->conn->prepare("SELECT quizz_id, title
+            FROM quizzes WHERE quizz_id=?");
+        $stmt->bind_param("i", $quizzCode);
         if (!$stmt->execute()) {
             $stmt->close();
             $response["error"] = true;
             return $response;
         }
         $dataRows = fetchData($stmt);
-        $stmt->close();
+        if($dataRows == null || count($dataRows)==0)
+        {
+            $response["error"] = true;
+            return $response;
+        }
+        $quizzData = json_decode(json_encode($dataRows[0]));
+        $response["quizzData"] = json_encode($quizzData);
+        $sqlQuery = "INSERT INTO users SET username=?, country_code=?, email=?, password=?, institution_id=?, is_teacher=?";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bind_param("ssssii", $username, $countryCode, $email, $password, $institution_id, $isTeacher);
+        if (!$stmt->execute()) {
+            $stmt->close();
+            $response["error"] = true;
+            return $response;
+        }
 
     }
 
