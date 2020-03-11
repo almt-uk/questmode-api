@@ -372,6 +372,16 @@ class DbHandlerWeb {
         $session_id = $stmt->insert_id;
         $response["session_id"] = $session_id;
 
+        $sqlQuery = "SELECT question_id, experience, content, image, quizz_id, time_question, time_answer, time_results
+            FROM questions WHERE quizz_id=?";
+        $stmt = $this->conn->prepare($sqlQuery);
+        $stmt->bind_param("i", $quizzCode);
+        if (!$stmt->execute()) {
+            $stmt->close();
+            $response["error"] = true;
+            return $response;
+        }
+
     }
 
 }
