@@ -162,7 +162,7 @@ class DbHandlerWeb {
                 $insert_id, $questionData->time_question, $questionData->time_answer, $questionData->time_results);
             if ($stmt->execute()) {
                 $question_id = $stmt->insert_id;
-                $sqlQuery = "INSERT INTO answers
+                $sqlQuery = "INSERT INTO answers_real
                     SET question_id = ?, content = ?, is_right = ?, order_id = ?";
                 $stmt = $this->conn->prepare($sqlQuery);
                 $answerCount = 1;
@@ -173,7 +173,7 @@ class DbHandlerWeb {
                     return false;
                 }
                 $answerCount++;
-                $sqlQuery = "INSERT INTO answers
+                $sqlQuery = "INSERT INTO answers_real
                     SET question_id = ?, content = ?, is_right = ?, order_id = ?";
                 $stmt = $this->conn->prepare($sqlQuery);
                 $stmt->bind_param("isii", $question_id, $questionData->answer2,
@@ -183,7 +183,7 @@ class DbHandlerWeb {
                     return false;
                 }
                 $answerCount++;
-                $sqlQuery = "INSERT INTO answers
+                $sqlQuery = "INSERT INTO answers_real
                     SET question_id = ?, content = ?, is_right = ?, order_id = ?";
                 $stmt = $this->conn->prepare($sqlQuery);
                 $stmt->bind_param("isii", $question_id, $questionData->answer3,
@@ -193,7 +193,7 @@ class DbHandlerWeb {
                     return false;
                 }
                 $answerCount++;
-                $sqlQuery = "INSERT INTO answers
+                $sqlQuery = "INSERT INTO answers_real
                     SET question_id = ?, content = ?, is_right = ?, order_id = ?";
                 $stmt = $this->conn->prepare($sqlQuery);
                 $stmt->bind_param("isii", $question_id, $questionData->answer4,
@@ -365,8 +365,8 @@ class DbHandlerWeb {
         $stmt = $this->conn->prepare($sqlQuery);
         $stmt->bind_param("si", $quizzNickname, $quizzCode);
         if (!$stmt->execute()) {
-            $stmt->close();
             $response["error"] = true;
+            $stmt->close();
             return $response;
         }
         $session_id = $stmt->insert_id;
@@ -382,12 +382,12 @@ class DbHandlerWeb {
             return $response;
         }
         $questionRows = fetchData($stmt);
-        $questionRowsData = []
+        $questionRowsData = [];
         foreach($questionRows as $question){
             $question = json_decode(json_encode($question));
             $question_id = $question->question_id;
             $sqlQuery = "SELECT answer_id, question_id, content, is_right, order_id
-                FROM answers WHERE question_id=?
+                FROM answers_real WHERE question_id=?
                 ORDER BY order_id ASC";
             $stmt = $this->conn->prepare($sqlQuery);
             $stmt->bind_param("i", $question_id);
@@ -398,8 +398,15 @@ class DbHandlerWeb {
             }
             $questionAnswersData = fetchData($stmt);
             $question = json_encode($question);
-            $question["questionAnswersData"] = $questionAnswersData;
-            $questionRowsData[] = $question;
+            $questionAnswersData2 = array();
+            foreach($questionAnswersData as $questionAnswerD)
+            {
+                $questionAnswersData2[] = json_encode($questionAnswerD);
+            }
+            json_decode($question)->questionAnswersData = implode(",", $questionAnswersData2);
+            echo json_decode($question)->questionAnswersData;
+
+            $questionRowsData[] = json_encode($question);
         }
         $response["questionRowsData"] = $questionRowsData;
         return $response;
@@ -446,7 +453,7 @@ class DbHandlerWeb {
         
         $sqlQuery = "SELECT PA.quizz_session_id, 
             FROM player_answers PA
-            INNER JOIN answers A
+            INNER JOIN answers_real A
             ON A.answer_id=PA.answer_id
             WHERE PA.question_id=?
             AND A.order_id=?";
